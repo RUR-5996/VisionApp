@@ -22,16 +22,22 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Vision {
 	public static void main(String[] args)  {
+		
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
+		inst.startDSClient();
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		
 		MjpegServer inputStream = new MjpegServer("MJPEG Server", 1185);
 		HttpCamera camera = new HttpCamera("Camera", /*"http://10.59.96.11/video/stream.mjpg"*/ "http://roborio-5996-frc.local:1181/?action=stream");
 		//inputStream.setSource(camera);
 		CvSink imageSink = new CvSink("Image Grabber");
 		imageSink.setSource(camera);
+		
+		/* CODE FOR IMAGE EXPORT
 		CvSource imageSource = new CvSource("Image Source", VideoMode.PixelFormat.kMJPEG, 320, 240, 30);
-		//MjpegServer cvStream = new MjpegServer("Image Stream", 1186);
-		//cvStream.setSource(imageSource);
+		MjpegServer outputStream = new MjpegServer("Image Stream", 1186);
+		outputStream.setSource(imageSource);
+		*/
 		
 		NetworkTable dataTable = inst.getTable("vision");
 		NetworkTable tapeTable = dataTable.getSubTable("tapeTable");
@@ -74,10 +80,10 @@ public class Vision {
 			}
 			
 			tapeTable.getEntry("tapeAngles").setDoubleArray(angles);
-			tapeTable.getEntry("tapeAngles").setDoubleArray(height);
-			tapeTable.getEntry("tapeAngles").setDoubleArray(width);
-			tapeTable.getEntry("tapeAngles").setDoubleArray(centerX);
-			tapeTable.getEntry("tapeAngles").setDoubleArray(centerY);
+			tapeTable.getEntry("tapeHeight").setDoubleArray(height);
+			tapeTable.getEntry("tapeWidth").setDoubleArray(width);
+			tapeTable.getEntry("tapeCenterX").setDoubleArray(centerX);
+			tapeTable.getEntry("tapeCenterY").setDoubleArray(centerY);
 			
 		}
 	}
