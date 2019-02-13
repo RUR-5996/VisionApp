@@ -1,4 +1,3 @@
-import java.awt.image.ImageProducer;
 import java.util.ArrayList;
 
 import org.opencv.core.Core;
@@ -15,20 +14,22 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.HttpCamera;
 import edu.wpi.cscore.MjpegServer;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoMode;
-import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.cscore.VideoMode;import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Vision {
 	public static void main(String[] args)  {
+		Vision vision = new Vision();
+		vision.run();
+	}
 		
+	public void run() {
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		inst.startDSClient();
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
-		MjpegServer inputStream = new MjpegServer("MJPEG Server", 1185);
-		HttpCamera camera = new HttpCamera("Camera", /*"http://10.59.96.11/video/stream.mjpg"*/ "http://roborio-5996-frc.local:1181/?action=stream");
+		//MjpegServer inputStream = new MjpegServer("MJPEG Server", 1185);
+		HttpCamera camera = new HttpCamera("USB Camera 0", /*"http://10.59.96.11/video/stream.mjpg"*/ "http://roborio-5996-frc.local:1181/?action=stream");
 		//inputStream.setSource(camera);
 		CvSink imageSink = new CvSink("Image Grabber");
 		imageSink.setSource(camera);
